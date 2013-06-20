@@ -1,15 +1,15 @@
-Webistrano - Capistrano deployment the easy way
+#Webistrano - Capistrano deployment the easy way
 
 
 
-About:
+##About
   Webistrano is a Web UI for managing Capistrano deployments.
   It lets you manage projects and their stages like test, production, 
   and staging with different settings. Those stages can then
   be deployed with Capistrano through Webistrano.
 
 
-Installation:
+##Installation
 
   1. Configuration
   
@@ -26,21 +26,29 @@ Installation:
     Then create the database structure with Rake:
   
     > cd webistrano
+
     > RAILS_ENV=production rake db:migrate
   
-  3. Start Webistrano  
+  3. Data initialization
+
+    > cd webistrano
+
+    > RAILS_ENV=production rake db:seed
+
+  4. Start Webistrano  
   
     > cd webistrano
+
     > ruby script/server -d -p 3000 -e production
   
-    Webistrano is then available at http://host:3000/
+    Webistrano is then available at http://localhost:3000/
   
-    The default user is `admin`, the password is `admin`. Please change the password
+    The default user is `admin`, the password is `admin!`. Please change the password
     after the first login.
   
-Author:
+##Author
   Jonathan Weiss <jw@innerewut.de>
   
-License: 
+##License
   Code: BSD, see LICENSE.txt
   Images: Right to use in their provided form in Webistrano installations. No other right granted.
