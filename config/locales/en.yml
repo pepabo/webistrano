@@ -76,6 +76,7 @@ en:
     recent_deployment_none: "This stage was never deployed."
     recent_deployment_not: "A deployment is currently not possible."
     recent_deployment_problem1: "No hosts are present. You need at least one host."
+    clone: "Clone"
 
   stage_configurations: "Stage's configurations"
   stage_configuration:

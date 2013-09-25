@@ -140,7 +140,35 @@ class Stage < ActiveRecord::Base
     other_self.update_column(:locked_by_deployment_id, deployment.id)
     self.reload
   end
-  
+
+  def prepare_cloning(other)
+    self.name = "Clone of #{other.name}"
+    self.alert_emails = other.alert_emails
+  end
+
+  def clone(other)
+    self.configuration_parameters.destroy_all
+    self.recipes.destroy_all
+    self.roles.destroy_all
+
+    other.configuration_parameters.each do |conf|
+      self.configuration_parameters << StageConfiguration.new(:name => conf.name, :value => conf.value,
+                                                              :project_id => conf.project_id,
+                                                              :prompt_on_deploy => conf.prompt_on_deploy)
+    end
+
+    other.recipes.each do |recipe|
+      self.recipes << recipe
+    end
+
+    other.roles.each do |role|
+      self.roles << Role.new(:name => role.name, :host_id => role.host_id, :primary => role.primary,
+                             :no_release => role.no_release, :ssh_port => role.ssh_port, :no_symlink => role.no_symlink)
+    end
+
+    self.reload
+  end
+
 protected
 
   def add_deployment_problem(key, desc)

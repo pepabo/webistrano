@@ -1,0 +1,26 @@
+<% content_for(:breadcrumb) do %>
+  <%= breadcrumb_box do %>
+    <%= link_to t("projects"), projects_path %>
+    <span class="divider">&raquo;</span>
+    <%= link_to @original.name, project_path(@original) %>
+    <span class="divider">&raquo;</span>
+    <%= t("stage.clone") %>
+  <% end %>
+<% end %>
+
+<% content_for(:page_title) do %>
+  <% @page_title = "#{t('stage.new')} #{@original.name}" %>
+  <h2><%= t("stage.clone") %> <%= @original.name %></h2>
+<% end %>
+
+<% flashed_errors(:stage) %>
+
+<div>
+  <%= form_for @stage, :url => stage_clone_path(@original), :html => {:class => "form-horizontal"} do |f| %>
+    <%= render :partial => 'form', :locals => {:form => f} %>
+    <div class="form-actions">
+      <%= f.submit t("stage.clone"), :class => "btn btn-primary" %>
+      <%= link_to t("project.back_to"), project_path(@project), :class => 'arrow_link ontheright' %>
+    </div>
+  <% end %>
+</div>

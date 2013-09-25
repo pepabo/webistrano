@@ -44,7 +44,7 @@
     </div>
     <br />
     <%= link_to t("edit"), edit_project_path(@project), :class => 'arrow_link' %> | 
-    <%= link_to t("project.clone"), clone_form_path(@project), :class => 'arrow_link' %> | 
+    <%= link_to t("project.clone"), project_clone_form_path(@project), :class => 'arrow_link' %> |
     <%= link_to t("delete"), project_path(@project), :data => {:confirm => 'Are you sure?'}, :method => :delete, :class => 'arrow_link' %>
   </div>
   <div class="box_bottom"></div>

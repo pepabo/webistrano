@@ -18,7 +18,14 @@ class StagesController < ApplicationController
   # GET /projects/1/stages/new
   def new
     @stage = current_project.stages.new
-    respond_with(@stage)
+    respond_with(@stage) do |format|
+      format.html do
+        if load_clone_original
+          @stage.prepare_cloning(@original)
+          render :action => 'clone'
+        end
+      end
+    end
   end
 
   # GET /projects/1/stages/1;edit
@@ -41,12 +48,21 @@ class StagesController < ApplicationController
       params[:stage].merge(:project_id => current_project.id)
     ).first_or_create
 
+    if load_clone_original
+      action_to_render = 'clone'
+    else
+      action_to_render = 'new'
+    end
+
     if @stage
+      @stage.clone(@original) if load_clone_original
       @stage.save
       flash[:notice] = 'Stage was successfully created.'
       respond_with(@stage, :location => [current_project, @stage])
     else
-      respond_with(@stage)
+      respond_with(@stage) do |format|
+        format.html {render :action => action_to_render}
+      end
     end
   end
 
@@ -100,4 +116,12 @@ class StagesController < ApplicationController
     end
   end
 
+private
+  def load_clone_original
+    if params[:clone]
+      @original = Stage.unscoped.find(params[:clone])
+    else
+      false
+    end
+  end
 end

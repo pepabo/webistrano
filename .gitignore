@@ -1,5 +1,4 @@
 .bundle
-Gemfile.lock
 vendor/bundle
 config/Gemfile.extras
 
@@ -14,3 +13,5 @@ config/webistrano_config.rb
 Thumbs.db
 
 .*.sw[a-z]
+
+.idea/*

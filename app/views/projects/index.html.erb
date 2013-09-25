@@ -36,7 +36,7 @@
           <td><%= project.deployments.count %></td>
           <td><%= project.created_at.to_s(:date_with_day) %></td>
           <td class="nowrap"><%= link_to t("edit"), edit_project_path(project) %></td>
-          <td class="nowrap"><%= link_to t("project.clone"), clone_form_path(project) %></td>
+          <td class="nowrap"><%= link_to t("project.clone"), project_clone_form_path(project) %></td>
           <td class="nowrap"><%= link_to t("delete"), project_path(project), :confirm => 'Are you sure?', :method => :delete %></td>
         </tr>
       <% end %>

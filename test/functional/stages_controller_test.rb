@@ -113,4 +113,16 @@ class StagesControllerTest < ActionController::TestCase
     end
   end
 
+  test "clone" do
+    @user = admin_login
+    @stage.name = "my_stage_1"
+    @stage.save!
+    assert_difference "Stage.count", 1 do
+      get :new, :project_id => @project.id, :clone => @stage.id
+      assert_response :success
+      assert_select "h2", "Clone #{@stage.name}"
+      post :create, :project_id => @project.id, :clone => @stage.id, :stage => { :name => 'my_stage_2', :alert_emails => 'example@email.com'}
+      assert_response :redirect
+    end
+  end
 end

@@ -153,7 +153,62 @@ class StageTest < ActiveSupport::TestCase
     stage.alert_emails = "michael"    
     assert !stage.valid?
   end
-  
+
+  test "prepare_cloning" do
+    original = FactoryGirl.create(:stage, :name => 'Some Stage', :alert_emails => 'foo@example.com')
+    my = FactoryGirl.create(:stage, :alert_emails => 'baa@example.com')
+
+    my.prepare_cloning(original)
+    assert_equal "Clone of Some Stage", my.name
+    assert_equal original.alert_emails, my.alert_emails
+  end
+
+  test "clone" do
+    original = FactoryGirl.create(:stage, :name => 'Some Stage', :alert_emails => 'foo@example.com')
+    3.times do |i|
+      original.recipes << FactoryGirl.create(:recipe, :name => "#{i}-recipe")
+    end
+    3.times do |i|
+      original.roles << FactoryGirl.create(:role, :name =>"#{i}-role")
+    end
+    3.times do |i|
+      FactoryGirl.create(:stage_configuration, :stage => original, :name => "#{i}-stage-conf", :value => "value-#{i}")
+    end
+    new_stage = FactoryGirl.create(:stage)
+    new_stage.clone(original)
+
+    # check stage configuration
+    assert_equal original.configuration_parameters.count, new_stage.configuration_parameters.count
+    new_stage.configuration_parameters.each do |conf|
+      orig = original.configuration_parameters.find_by_name(conf.name)
+      assert_equal orig.name, conf.name
+      assert_equal orig.value, conf.value
+      assert_equal orig.prompt_on_deploy, conf.prompt_on_deploy
+    end
+
+    # check recipes
+    assert_equal original.recipes.count, new_stage.recipes.count
+    new_stage.recipes.each do |recipe|
+      orig = original.recipes.find_by_name(recipe.name)
+      assert_equal orig.name, recipe.name
+      assert_equal orig.description, recipe.description
+      assert_equal orig.body, recipe.body
+    end
+
+    # check roles
+    assert_equal original.roles.count, new_stage.roles.count
+    new_stage.roles.each do |role|
+      orig = original.roles.find_by_name(role.name)
+      assert_equal orig.name, role.name
+      assert_equal orig.host_id, role.host_id
+      assert_equal orig.primary, role.primary
+      assert_equal orig.no_release, role.no_release
+      assert_equal orig.ssh_port, role.ssh_port
+      assert_equal orig.no_symlink, role.no_symlink
+    end
+  end
+
+
   test "recent_deployments" do
     stage = FactoryGirl.create(:stage)
     role = FactoryGirl.create(:role, :stage => stage)

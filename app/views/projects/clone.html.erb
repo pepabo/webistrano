@@ -12,7 +12,7 @@
     <h2><%= t("project.clone") %> <%= @original.name %></h2>
   <% end %>
 
-  <%= form_for @project, :url => clone_path(@original), :html => {:class => "form-horizontal"} do |f| %>
+  <%= form_for @project, :url => project_clone_path(@original), :html => {:class => "form-horizontal"} do |f| %>
     <%= render :partial => 'form', :locals => {:form => f} %>
     <div class="form-actions">
       <%= f.submit t("project.clone"), :class => "btn btn-primary" %>
