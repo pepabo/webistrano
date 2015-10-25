@@ -12,43 +12,46 @@
 ##Installation
 
   1. Configuration
-  
+
     Copy config/webistrano_config.rb.sample to config/webistrano_config.rb
     and edit appropriatly. In this configuration file you can set the mail
     settings of Webistrano.
-  
+
+    Copy config/initializers/devise.rb.sample to config/initializers/devise.rb
+    and edit appropriatly.
+
   2. Database
-  
+
     Copy config/database.yml.sample to config/database.yml and edit to
     resemble your setting. You need at least the production database.
     The others are optional entries for development and testing.
-  
+
     Then create the database structure with Rake:
-  
+
     > cd webistrano
 
     > RAILS_ENV=production rake db:migrate
-  
+
   3. Data initialization
 
     > cd webistrano
 
     > RAILS_ENV=production rake db:seed
 
-  4. Start Webistrano  
-  
+  4. Start Webistrano
+
     > cd webistrano
 
     > ruby script/server -d -p 3000 -e production
-  
+
     Webistrano is then available at http://localhost:3000/
-  
+
     The default user is `admin`, the password is `admin!`. Please change the password
     after the first login.
-  
+
 ##Author
   Jonathan Weiss <jw@innerewut.de>
-  
+
 ##License
   Code: BSD, see LICENSE.txt
   Images: Right to use in their provided form in Webistrano installations. No other right granted.
